@@ -60,3 +60,46 @@ Or using ansible key
 ssh -i ~/.ssh/ansible <system1 IP>
 ssh -i ~/.ssh/ansible <system2 IP>
 ```
+
+## Install Ansible and python
+
+on Ansible container
+```
+apk update
+apk add ansible
+ansible --version
+```
+
+On system1 and system2
+```
+apk update
+apk add python3
+```
+
+## Create inventory file
+On Ansible container
+
+```
+echo "<system1 IP>" > inventory
+echo "<system2 IP>" >> inventory
+```
+
+## Running ad hoc commands
+
+### ping
+```
+ansible all --key-file ~/.ssh/ansible -i inventory -m ping
+```
+
+copy ansible.cfg file and above command will be reduced to below
+
+```
+ansible all -m ping
+```
+
+### gathering facts
+```
+ansible all --list-hosts
+ansible all -m gather_facts
+ansible all -m gather_facts --limit <system1 IP>
+```
