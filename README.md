@@ -103,3 +103,13 @@ ansible all --list-hosts
 ansible all -m gather_facts
 ansible all -m gather_facts --limit <system1 IP>
 ```
+
+
+## Running elevated commands
+apk for Alpine or apt for Ubuntu
+```
+ansible all -m apk -a update_cache=true --become --ask-become-pass
+ansible all -m apk -a name=tcpdump --become --ask-become-pass
+ansible all -m apk -a "name=tcpdump state=latest" --become --ask-become-pass
+ansible all -m apk -a "upgrade=true" --become --ask-become-pass
+```
