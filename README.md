@@ -84,6 +84,15 @@ echo "<system1 IP>" > inventory
 echo "<system2 IP>" >> inventory
 ```
 
+## Create docker network
+After below from each docker container you can reach other containers with just container names i.e. ansible, system1 and system2
+```
+docker network create ansiblenet
+docker network connect ansiblenet ansible
+docker network connect ansiblenet system1
+docker network connect ansiblenet system2
+
+```
 ## Running ad hoc commands
 
 ### ping
