@@ -8,11 +8,13 @@
       apk:
         name: apache2
         state: latest
+      when: ansible_distribution == "Alpine"
 
     - name: install curl
       apk:
         name: curl
         state: latest
+      when: ansible_distribution == "Alpine"
 
     - name: start apache
       command: /usr/sbin/httpd -D BACKGROUND -f /etc/apache2/httpd.conf

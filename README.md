@@ -142,3 +142,24 @@ curl localhost
 ```
 ansible-playbook uninstall_apache.yml
 ```
+
+## When condition 
+
+To run certain command on some specific distribution you can put whn condition like this
+
+Below will show Alpine as distribution name
+```
+ansible all -m gather_facts --limit <system1 IP> | grep -i ansible_distribution
+```
+
+Each task can be set conditionally as below
+
+```
+    - name: install apache2 package
+      apk:
+        name: apache2
+        state: latest
+      when: ansible_distribution == "Alpine"
+```
+
+Also conditions can be complex with other operators like **and**, **in**
