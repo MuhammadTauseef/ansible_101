@@ -1,0 +1,16 @@
+---
+
+- name: Instllation
+  hosts: all
+  tasks:
+
+    - name: install apache and curl package
+      package:
+        name: 
+          - "{{apache_package}}"
+          - "{{curl_package}}"
+        state: latest
+      when: ansible_distribution == "Alpine"
+
+    - name: start apache
+      command: /usr/sbin/httpd -D BACKGROUND -f /etc/apache2/httpd.conf

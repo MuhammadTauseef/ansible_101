@@ -163,3 +163,24 @@ Each task can be set conditionally as below
 ```
 
 Also conditions can be complex with other operators like **and**, **in**
+
+## Improving playbook
+
+package can be used intead of apk or apt as package is generic os installation module. multiple packages can be installed as mentioned in list below with same task. 
+```
+    - name: install apache and curl package
+      package:
+        name: 
+          - "{{apache_package}}"
+          - "{{curl_package}}"
+        state: latest
+      when: ansible_distribution == "Alpine"
+
+```
+
+names of packages can be declaredas variables in inventory file
+
+```
+<system1 IP> apache_package=apache2 curl_package=curl
+<system2 IP> apache_package=apache2 curl_package=curl
+```
