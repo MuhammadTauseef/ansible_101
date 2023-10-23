@@ -206,3 +206,27 @@ playbook can be updated to run task on specific hosts
 ```
 
 Final playbook target_install_apache.yml
+
+## Tags
+
+tags values can be **always** or any other single or comma seperated values
+```
+    - name: install apache package
+      tags: web
+      package:
+        name: 
+          - "{{apache_package}}"
+        state: latest
+      when: ansible_distribution == "Alpine"
+```
+To list all tags in a playbook
+```
+ansible-playbook --list-tags tags_install_apache.yml
+```
+
+To run specific tag
+```
+ansible-playbook --tags web tags_install_apache.yml
+```
+
+final playbook tag_install_apache.yml
