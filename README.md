@@ -184,3 +184,25 @@ names of packages can be declaredas variables in inventory file
 <system1 IP> apache_package=apache2 curl_package=curl
 <system2 IP> apache_package=apache2 curl_package=curl
 ```
+
+Final playbook name improved_install_apache.yml
+
+## Targetting specific nodes for play
+
+inventory file can be updated to club different servers together
+```
+[web_servers]
+172.17.0.2 apache_package=apache2
+[test_servers]
+172.17.0.4 curl_package=curl
+```
+
+playbook can be updated to run task on specific hosts
+
+```
+- name: Instllation on web servers
+  hosts: web_servers
+  tasks:
+```
+
+Final playbook target_install_apache.yml

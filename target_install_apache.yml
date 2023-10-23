@@ -1,0 +1,27 @@
+---
+
+- name: Instllation on web servers
+  hosts: web_servers
+  tasks:
+
+    - name: install apache package
+      package:
+        name: 
+          - "{{apache_package}}"
+        state: latest
+      when: ansible_distribution == "Alpine"
+
+    - name: start apache
+      command: /usr/sbin/httpd -D BACKGROUND -f /etc/apache2/httpd.conf
+
+
+- name: Instllation on test servers
+  hosts: test_servers
+  tasks:
+
+    - name: install curl package
+      package:
+        name: 
+          - "{{curl_package}}"
+        state: latest
+      when: ansible_distribution == "Alpine"
