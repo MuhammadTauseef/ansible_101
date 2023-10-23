@@ -1,0 +1,36 @@
+---
+
+- name: Instllation
+  hosts: test_servers
+  tasks:
+
+    - name: install apache and curl package
+      package:
+        name: 
+          - "{{apache_package}}"
+          - "{{curl_package}}"
+        state: latest
+      when: ansible_distribution == "Alpine"
+
+    - name: start apache
+      command: /usr/sbin/httpd -D BACKGROUND -f /etc/apache2/httpd.conf
+
+    - name: Copy file with owner and permissions
+      copy:
+        src: site.html
+        dest: /var/www/localhost/htdocs/index.html
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: install unzip
+      package:
+        name: unzip
+    - name: install terraform
+      unarchive:
+        src: https://releases.hashicorp.com/terraform/1.6.2/terraform_1.6.2_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes
+        mode: 0755
+        owner: root
+        group: root

@@ -209,7 +209,7 @@ Final playbook target_install_apache.yml
 
 ## Tags
 
-tags values can be **always** or any other single or comma seperated values
+tags values can be **always** or any other single or comma seperated words
 ```
     - name: install apache package
       tags: web
@@ -230,3 +230,31 @@ ansible-playbook --tags web tags_install_apache.yml
 ```
 
 final playbook tag_install_apache.yml
+
+## Managing files
+
+To copy a file from ansible container to remote
+
+create a folder named files and place site.html inside files
+```
+    - name: Copy file with owner and permissions
+      copy:
+        src: site.html
+        dest: /var/www/localhost/htdocs/index.html
+        owner: root
+        group: root
+        mode: '0644'
+```
+
+To copy from remote to local
+```
+    - name: install terraform
+      unarchive:
+        src: https://releases.hashicorp.com/terraform/1.6.2/terraform_1.6.2_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes
+        mode: 0755
+        owner: root
+        group: root
+```
+Final playbook name is copy_playbook.yml
