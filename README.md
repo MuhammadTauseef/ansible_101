@@ -122,3 +122,23 @@ ansible all -m apk -a name=tcpdump --become --ask-become-pass
 ansible all -m apk -a "name=tcpdump state=latest" --become --ask-become-pass
 ansible all -m apk -a "upgrade=true" --become --ask-become-pass
 ```
+
+## Writing first playbook
+
+To install apache on all hosts
+
+On Ansible system
+```
+ansible-playbook install_apache.yml
+```
+
+On System1 and System2, to verify if apache was installed
+```
+curl localhost
+```
+
+ To remove apache and curl
+ On Ansible system
+```
+ansible-playbook uninstall_apache.yml
+```
