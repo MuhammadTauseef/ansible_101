@@ -1,0 +1,55 @@
+---
+
+- name: Instllation
+  hosts: test_servers
+  tasks:
+
+    - name: install apache and curl package
+      package:
+        name: 
+          - "{{apache_package}}"
+          - "{{curl_package}}"
+          - openrc
+        state: latest
+      when: ansible_distribution == "Alpine"
+
+    - name: start apache2
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Alpine"
+
+    - name: change MaxKeepAliveRequests
+      lineinfile:
+        path: /etc/apache2/conf.d/default.conf
+        regexp: '^MaxKeepAliveRequests'
+        line: MaxKeepAliveRequests 200
+      when: ansible_distribution == "Alpine"
+      register: apache2
+
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+      when: apache2
+
+    - name: Copy file with owner and permissions
+      copy:
+        src: site.html
+        dest: /var/www/localhost/htdocs/index.html
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: install unzip
+      package:
+        name: unzip
+    - name: install terraform
+      unarchive:
+        src: https://releases.hashicorp.com/terraform/1.6.2/terraform_1.6.2_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes
+        mode: 0755
+        owner: root
+        group: root

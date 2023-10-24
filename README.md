@@ -258,3 +258,35 @@ To copy from remote to local
         group: root
 ```
 Final playbook name is copy_playbook.yml
+
+
+## Managing services
+
+To start and enable a service, service module can be used as below
+```
+    - name: start apache2
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Alpine"
+```
+
+To update a line MaxKeepAliveRequests in a file /etc/apache2/conf.d/default.conf use below. register will set the variable apache2 which will be tested in the next play to ensure to restart the service after change.
+
+```
+    - name: change MaxKeepAliveRequests
+      lineinfile:
+        path: /etc/apache2/conf.d/default.conf
+        regexp: '^MaxKeepAliveRequests'
+        line: MaxKeepAliveRequests 200
+      when: ansible_distribution == "Alpine"
+      register: apache2
+
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+      when: apache2
+```
+Final playbook name is service_playbook.yml
