@@ -380,3 +380,49 @@ apache_package: apache2
 ```
 
 There will be no change and older roles_playbook.yml can be used as is.
+
+## Templates
+
+If a certain files needs to have different value based on different servers then templates can be used. e.g. lets have sshd_config file differently define AllowUsers variables set for different hosts
+
+```
+mkdir roles/test_servers/templates
+mkdir roles/web_servers/templates
+mkdir roles/test_servers/handlers
+mkdir roles/web_servers/handlers
+```
+
+copy file from system1 or system2 into templates folders and rename it as sshd_config_alpine.j2
+insert below line in the file
+```
+AllowUsers {{ ssh_users }}
+```
+
+in the handlers folders create main.yml and wrte below play
+```
+- name: restart_sshd
+  service:
+    name: sshd
+    state: restarted
+```
+
+under host_vars for each host define desired variables for each host
+```
+ssh_users: "user1 user2"
+ssh_template_file: sshd_config_alpine.j2
+```
+
+in roles/test_servers/tasks/main.yml and roles/web_servers/tasks/main.yml mention the play
+```
+- name: generate sshd_config file from template
+  template:
+    src: "{{ ssh_template_file}}"
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart_sshd
+```
+
+Final playbook is roles_playbook.yml
+

@@ -1,2 +1,4 @@
 curl_package: curl 
 apache_package: apache2
+ssh_users: "user1 user2"
+ssh_template_file: sshd_config_alpine.j2

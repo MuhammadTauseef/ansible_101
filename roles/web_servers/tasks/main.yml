@@ -6,10 +6,13 @@
           - openrc
         state: latest
       when: ansible_distribution == "Alpine"
+      notify: start_apache2
 
-    - name: start apache2
-      service:
-        name: apache2
-        state: started
-        enabled: yes
-      when: ansible_distribution == "Alpine"
+    - name: generate sshd_config file from template
+      template:
+        src: "{{ ssh_template_file}}"
+        dest: /etc/ssh/sshd_config
+        owner: root
+        group: root
+        mode: 0644
+      notify: restart_sshd
