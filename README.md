@@ -365,3 +365,18 @@ Now roles_playbook.yml will be set as below
 Final playbook is roles_playbook.yml along with playbooks inside roles directory
 
 
+## host variables
+
+```
+mkdir host_vars
+touch host_vars/<system1 ip>.yml
+touch host_vars/<system2 ip>.yml
+```
+
+Remove the varables from inventory file and place them inside respective files under host_vars folder e.g.
+```
+curl_package: curl 
+apache_package: apache2
+```
+
+There will be no change and older roles_playbook.yml can be used as is.

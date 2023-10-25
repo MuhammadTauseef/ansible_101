@@ -1,0 +1,2 @@
+curl_package: curl 
+apache_package: apache2
