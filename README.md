@@ -290,3 +290,28 @@ To update a line MaxKeepAliveRequests in a file /etc/apache2/conf.d/default.conf
       when: apache2
 ```
 Final playbook name is service_playbook.yml
+
+## Adding users
+
+To create user, copying ssh key and creating sudoers file use below plays
+
+```
+    - name: create user myuser
+      user:
+        name: myuser
+        groups: root
+    - name: add ssh key for myuser
+      authorized_key:
+        user: myuser
+        key: "<cat ~/.ssh/ansible.pub>"
+    - name: add sudoers file for myuser
+      copy:
+        src: sudoer_myuser
+        dest: /etc/sudoers.d/myuser
+        owner: root
+        group: root
+        mode: 0440
+```
+
+Final playbook name is users_playbook.yml
+
