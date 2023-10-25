@@ -1,0 +1,21 @@
+---
+
+- name: Bootstrapping
+  hosts: test_servers
+  tasks:
+
+    - name: create user myuser
+      user:
+        name: myuser
+        groups: root
+    - name: add ssh key for myuser
+      authorized_key:
+        user: myuser
+        key: "<cat ~/.ssh/ansible.pub>"
+    - name: add sudoers file for myuser
+      copy:
+        src: sudoer_myuser
+        dest: /etc/sudoers.d/myuser
+        owner: root
+        group: root
+        mode: 0440

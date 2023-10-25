@@ -1,0 +1,6 @@
+    - name: install curl package
+      package:
+        name: 
+          - "{{curl_package}}"
+        state: latest
+      when: ansible_distribution == "Alpine"

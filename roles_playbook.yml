@@ -1,0 +1,9 @@
+---
+
+ - hosts: web_servers
+   roles:
+     - web_servers
+ 
+ - hosts: test_servers
+   roles:
+     - test_servers

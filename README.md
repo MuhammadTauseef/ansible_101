@@ -290,3 +290,76 @@ To update a line MaxKeepAliveRequests in a file /etc/apache2/conf.d/default.conf
       when: apache2
 ```
 Final playbook name is service_playbook.yml
+
+## Adding users
+
+To create user, copying ssh key and creating sudoers file use below plays
+
+```
+    - name: create user myuser
+      user:
+        name: myuser
+        groups: root
+    - name: add ssh key for myuser
+      authorized_key:
+        user: myuser
+        key: "<cat ~/.ssh/ansible.pub>"
+    - name: add sudoers file for myuser
+      copy:
+        src: sudoer_myuser
+        dest: /etc/sudoers.d/myuser
+        owner: root
+        group: root
+        mode: 0440
+```
+
+Final playbook name is users_playbook.yml
+
+
+## Roles
+
+Create folders below
+```
+mkdir roles
+mkdir roles/web_servers
+mkdir roles/test_servers
+mkdir roles/web_servers/tasks
+mkdir roles/test_servers/tasks
+```
+
+Create main.yml inside roles/web_servers/tasks
+```
+    - name: install apache and curl package
+      package:
+        name: 
+          - "{{apache_package}}"
+          - "{{curl_package}}"
+          - openrc
+        state: latest
+      when: ansible_distribution == "Alpine"
+
+    - name: start apache2
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Alpine"
+```
+Create main.yml inside roles/test_servers/tasks
+```
+
+```
+
+Now roles_playbook.yml will be set as below
+```
+---
+ - hosts: web_servers
+   roles:
+     - web_servers
+ 
+ - hosts: test_servers
+   roles:
+     - test_servers
+```
+
+Final playbook is roles_playbook.yml along with playbooks inside roles directory
