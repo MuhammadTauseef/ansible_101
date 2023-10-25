@@ -364,27 +364,4 @@ Now roles_playbook.yml will be set as below
 
 Final playbook is roles_playbook.yml along with playbooks inside roles directory
 
-## Adding users
-
-To create user, copying ssh key and creating sudoers file use below plays
-
-```
-    - name: create user myuser
-      user:
-        name: myuser
-        groups: root
-    - name: add ssh key for myuser
-      authorized_key:
-        user: myuser
-        key: "<cat ~/.ssh/ansible.pub>"
-    - name: add sudoers file for myuser
-      copy:
-        src: sudoer_myuser
-        dest: /etc/sudoers.d/myuser
-        owner: root
-        group: root
-        mode: 0440
-```
-
-Final playbook name is users_playbook.yml
 
